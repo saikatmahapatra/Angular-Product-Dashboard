@@ -14,10 +14,10 @@
 </div>
 
 <div class="row" *ngIf="!isLoading">
-  <div class="col-md-3" *ngFor="let product of products">
+  <div class="col-md-3 mb-3" *ngFor="let product of products">
     <mat-card class="product-card" appearance="outlined">
       <mat-card-header>
-        <mat-card-title>{{product?.title}}</mat-card-title>
+        <mat-card-title>{{product?.title | slice:0:25}}...</mat-card-title>
         <mat-card-subtitle>{{product?.category_name}}</mat-card-subtitle>
       </mat-card-header>
       <img mat-card-image [attr.src]="product?.image_url" alt="{{product?.title}}">
@@ -27,6 +27,7 @@
         </p>
       </mat-card-content>
       <mat-card-actions>
+        <button mat-raised-button class="me-2">Details</button>
         <button mat-raised-button>Add to cart</button>
       </mat-card-actions>
     </mat-card>
