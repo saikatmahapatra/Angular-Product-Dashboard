@@ -15,9 +15,9 @@
 
 <div class="row" *ngIf="!isLoading">
   <div class="col-md-3" *ngFor="let product of products">
-    <mat-card class="example-card" appearance="outlined">
+    <mat-card class="product-card" appearance="outlined">
       <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
+        <div mat-card-avatar class="product-header-image"></div>
         <mat-card-title>{{product?.title}}</mat-card-title>
         <mat-card-subtitle>{{product?.category_name}}</mat-card-subtitle>
       </mat-card-header>
