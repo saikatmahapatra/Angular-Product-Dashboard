@@ -24,7 +24,7 @@
       <img mat-card-image [attr.src]="product?.image_url" alt="{{product?.title}}">
       <mat-card-content>
         <p>
-          {{product?.description}}
+          {{product?.description | slice:0:50}}...
         </p>
       </mat-card-content>
       <mat-card-actions>
