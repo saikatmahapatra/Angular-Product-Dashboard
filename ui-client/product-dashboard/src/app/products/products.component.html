@@ -17,7 +17,6 @@
   <div class="col-md-3" *ngFor="let product of products">
     <mat-card class="product-card" appearance="outlined">
       <mat-card-header>
-        <div mat-card-avatar class="product-header-image"></div>
         <mat-card-title>{{product?.title}}</mat-card-title>
         <mat-card-subtitle>{{product?.category_name}}</mat-card-subtitle>
       </mat-card-header>
@@ -28,8 +27,7 @@
         </p>
       </mat-card-content>
       <mat-card-actions>
-        <button matButton>LIKE</button>
-        <button matButton>SHARE</button>
+        <button mat-raised-button>Add to cart</button>
       </mat-card-actions>
     </mat-card>
   </div>

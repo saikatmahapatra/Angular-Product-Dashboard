@@ -4,13 +4,13 @@ import { ProductService, Product, ProductFilters } from '../datasources/product.
 import { CategoryService, Category } from '../datasources/category.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MatCardModule, MatCardActions, MatCardContent, MatCardTitle, MatCardSubtitle, MatCardHeader, MatCard } from '@angular/material/card';
-
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'app-product-list',
   standalone: true,
   templateUrl: './products.component.html',
-  imports: [CommonModule, FormsModule, MatCardActions, MatCardContent, MatCardTitle, MatCardSubtitle, MatCardHeader, MatCard],
+  imports: [CommonModule, FormsModule, MatCardModule, MatButtonModule],
   styleUrls: ['./products.component.scss']
 })
 export class ProductListComponent implements OnInit {
@@ -22,7 +22,7 @@ export class ProductListComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private categoryService: CategoryService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadCategories();
