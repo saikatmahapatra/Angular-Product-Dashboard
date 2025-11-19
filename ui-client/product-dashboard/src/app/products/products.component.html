@@ -1,22 +1,40 @@
-    <div class="product-list-container">
-      <h2>Products</h2>
-      
-      <div class="filters">
-        <select [(ngModel)]="filters.category" (change)="loadProducts()">
-          <option [value]="undefined">All Categories</option>
-          <option *ngFor="let cat of categories" [value]="cat.id">
-            {{cat.name}}
-          </option>
-        </select>
+<h2>Products</h2>
+<div class="row">
+  <div class="col-md-12 mb-3">
+    <div class="filters">
+      <select [(ngModel)]="filters.category" (change)="loadProducts()">
+        <option [value]="undefined">All Categories</option>
+        <option *ngFor="let cat of categories" [value]="cat.id">
+          {{cat.name}}
+        </option>
+      </select>
 
-      </div>
-
-      <div class="products-grid" *ngIf="!isLoading">
-        <div class="product-card" *ngFor="let product of products">
-          <h3>{{product.title}}</h3>
-          <p>Category: {{product.category_name}}</p>
-        </div>
-      </div>
-
-      <div *ngIf="isLoading">Loading...</div>
     </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="!isLoading">
+  <div class="col-md-3" *ngFor="let product of products">
+    <mat-card class="example-card" appearance="outlined">
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>{{product?.title}}</mat-card-title>
+        <mat-card-subtitle>{{product?.category_name}}</mat-card-subtitle>
+      </mat-card-header>
+      <img mat-card-image [attr.src]="product?.image_url" alt="{{product?.title}}">
+      <mat-card-content>
+        <p>
+          {{product?.description}}
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button matButton>LIKE</button>
+        <button matButton>SHARE</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
+
+<div class="row" *ngIf="isLoading">
+  <div class="col-md-12">Loading...</div>
+</div>

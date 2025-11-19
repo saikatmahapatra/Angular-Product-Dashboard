@@ -4,12 +4,13 @@ import { ProductService, Product, ProductFilters } from '../datasources/product.
 import { CategoryService, Category } from '../datasources/category.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { MatCardModule, MatCardActions, MatCardContent, MatCardTitle, MatCardSubtitle, MatCardHeader, MatCard } from '@angular/material/card';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
   templateUrl: './products.component.html',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatCardActions, MatCardContent, MatCardTitle, MatCardSubtitle, MatCardHeader, MatCard],
   styleUrls: ['./products.component.scss']
 })
 export class ProductListComponent implements OnInit {
