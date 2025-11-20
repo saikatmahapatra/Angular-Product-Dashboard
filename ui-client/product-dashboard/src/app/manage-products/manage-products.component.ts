@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './manage-products.component.scss'
 })
 export class ManageProductsComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'title', 'image_url', 'category_name', 'price', 'is_featured'];
+  displayedColumns: string[] = ['id', 'title', 'image_url', 'category_name', 'priority', 'price', 'is_featured'];
   products: Product[] = [];
   isLoading = false;
 
