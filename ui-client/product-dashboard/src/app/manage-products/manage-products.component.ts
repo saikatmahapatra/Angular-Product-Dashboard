@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule, SortDirection } from '@angular/material/sort';
-import { Product, ProductService } from '../datasources/product.service';
+import { Product, ProductFilters, ProductService } from '../datasources/product.service';
 import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-manage-products',
@@ -17,6 +17,10 @@ export class ManageProductsComponent implements OnInit {
   displayedColumns: string[] = ['id', 'title', 'category_name', 'price', 'is_featured'];
   products: Product[] = [];
   isLoading = false;
+  filterConfig: ProductFilters = {
+    page: 1,
+    page_size: 5
+  };
 
   constructor(
     private productService: ProductService
@@ -28,7 +32,7 @@ export class ManageProductsComponent implements OnInit {
 
   loadProducts(): void {
     this.isLoading = true;
-    this.productService.getProducts().subscribe({
+    this.productService.getProducts(this.filterConfig).subscribe({
       next: (response) => {
         this.products = response.results;
         this.isLoading = false;
