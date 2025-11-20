@@ -17,6 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class ProductListComponent implements OnInit {
   products: Product[] = [];
+  featuredProducts: Product[] = [];
   categories: Category[] = [];
   filters: ProductFilters = {};
   isLoading = false;
@@ -29,6 +30,20 @@ export class ProductListComponent implements OnInit {
   ngOnInit(): void {
     this.loadCategories();
     this.loadProducts();
+    this.getFeatureProducts();
+  }
+
+  getFeatureProducts() {
+    this.isLoading = true;
+    this.productService.getFeaturedProducts().subscribe({
+      next: (response) => {
+        this.featuredProducts = response;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.isLoading = false;
+      }
+    });
   }
 
   loadProducts(): void {
