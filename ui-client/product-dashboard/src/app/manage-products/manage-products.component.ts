@@ -17,9 +17,14 @@ export class ManageProductsComponent implements OnInit {
   displayedColumns: string[] = ['id', 'title', 'category_name', 'price', 'is_featured'];
   products: Product[] = [];
   isLoading = false;
+
+  totalRecords = 0;
+  itemPerPage = 10; // not working, BE is having 10 by default
+  pageIndex = 0;
+
   filterConfig: ProductFilters = {
-    page: 1,
-    page_size: 5
+    page: this.pageIndex + 1,
+    page_size: this.itemPerPage
   };
 
   constructor(
@@ -30,11 +35,20 @@ export class ManageProductsComponent implements OnInit {
     this.loadProducts();
   }
 
+  pageChangeEvent(event: any): void {
+    this.pageIndex = event.pageIndex;
+    this.itemPerPage = event.pageSize;
+    this.filterConfig.page = this.pageIndex + 1;
+    this.filterConfig.page_size = event.pageSize;
+    this.loadProducts();
+  }
+
   loadProducts(): void {
     this.isLoading = true;
     this.productService.getProducts(this.filterConfig).subscribe({
       next: (response) => {
         this.products = response.results;
+        this.totalRecords = response?.count;
         this.isLoading = false;
       },
       error: (error) => {
