@@ -8,11 +8,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 @Component({
   selector: 'app-product-list',
   standalone: true,
   templateUrl: './products.component.html',
-  imports: [CommonModule, FormsModule, MatCardModule, MatButtonModule, MatIconModule, MatToolbarModule],
+  imports: [CommonModule, FormsModule, MatCardModule, MatButtonModule, MatIconModule, MatToolbarModule, MatPaginatorModule],
   styleUrls: ['./products.component.scss']
 })
 export class ProductListComponent implements OnInit {
@@ -22,15 +23,30 @@ export class ProductListComponent implements OnInit {
   filters: ProductFilters = {};
   isLoading = false;
 
+  totalRecords = 0;
+  itemPerPage = 10; // not working, BE is having 10 by default
+  pageIndex = 0;
+
   constructor(
     private productService: ProductService,
     private categoryService: CategoryService
-  ) { }
+  ) { 
+    this.filters.page = this.pageIndex + 1;
+    this.filters.page_size = this.itemPerPage;
+  }
 
   ngOnInit(): void {
     this.loadCategories();
     this.loadProducts();
     this.getFeatureProducts();
+  }
+
+  pageChangeEvent(event: any): void {
+    this.pageIndex = event.pageIndex;
+    this.itemPerPage = event.pageSize;
+    this.filters.page = this.pageIndex + 1;
+    this.filters.page_size = event.pageSize;
+    this.loadProducts();
   }
 
   getFeatureProducts() {
@@ -50,6 +66,7 @@ export class ProductListComponent implements OnInit {
     this.isLoading = true;
     this.productService.getProducts(this.filters).subscribe({
       next: (response) => {
+        this.totalRecords = response?.count;
         this.products = response.results;
         this.isLoading = false;
       },
