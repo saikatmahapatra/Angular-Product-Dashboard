@@ -17,6 +17,14 @@ export interface Product {
   updated_at: string;
 }
 
+export interface CartItem {
+  id: number;
+  title: string;
+  image_url?: string;
+  price: number;
+  quantity: number;
+}
+
 export interface ProductFilters {
   category?: number;
   is_featured?: boolean;
@@ -32,7 +40,7 @@ export interface ProductFilters {
 export class ProductService {
   private endpoint = '/api/products';
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService) { }
 
   /**
    * Get all products with optional filters

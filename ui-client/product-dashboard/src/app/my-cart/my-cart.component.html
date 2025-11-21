@@ -1,1 +1,30 @@
 <h2>Cart</h2>
+<div *ngIf="isLoading" style="position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered" *ngIf="!isLoading">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of cartItems">
+                    <td>
+                        <img [src]="item?.image_url" alt="{{ item.title }}" width="50" height="50" style="margin-right:10px;">
+                        {{ item.title }}
+                    </td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.price | currency }}</td>
+                    <td>{{ (item.quantity * item.price) | currency }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

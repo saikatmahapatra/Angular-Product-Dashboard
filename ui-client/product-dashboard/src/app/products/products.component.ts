@@ -1,6 +1,6 @@
 // product-list.component.ts
 import { Component, OnInit } from '@angular/core';
-import { ProductService, Product, ProductFilters } from '../datasources/product.service';
+import { ProductService, Product, ProductFilters, CartItem } from '../datasources/product.service';
 import { CategoryService, Category } from '../datasources/category.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -11,11 +11,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-product-list',
   standalone: true,
   templateUrl: './products.component.html',
-  imports: [CommonModule, FormsModule, MatCardModule, MatButtonModule, MatIconModule, MatToolbarModule, MatPaginatorModule, MatProgressSpinnerModule],
+  imports: [CommonModule, FormsModule, MatCardModule, MatButtonModule, MatIconModule, MatToolbarModule, MatPaginatorModule, MatProgressSpinnerModule, MatSnackBarModule],
   styleUrls: ['./products.component.scss']
 })
 export class ProductListComponent implements OnInit {
@@ -27,6 +28,7 @@ export class ProductListComponent implements OnInit {
   isDetailView = false;
   title = 'Product List';
   productDetails: Product[] = [];
+  productCart: CartItem[] = [];
 
   totalRecords = 0;
   itemPerPage = 10; // not working, BE is having 10 by default
@@ -36,7 +38,8 @@ export class ProductListComponent implements OnInit {
     private productService: ProductService,
     private categoryService: CategoryService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private snackBar: MatSnackBar
 
   ) {
     this.filters.page = this.pageIndex + 1;
@@ -154,6 +157,32 @@ export class ProductListComponent implements OnInit {
   }
 
   addToCart(productId: number, quantity: number) {
+    const product = this.products.find(p => p.id === productId);
+    // check if product already in cart
+    const existingCartItems = JSON.parse(localStorage.getItem('productCart') || '[]');
+    const existingItemIndex = existingCartItems.findIndex((item: CartItem) => item.id === productId);
+    if (existingItemIndex !== -1) {
+      // update quantity
+      existingCartItems[existingItemIndex].quantity += quantity;
+    } else {
+      // add new item
+      const cartItem: CartItem = {
+        id: productId,
+        title: product?.title || '',
+        image_url: product?.image_url || '',
+        price: Number(product?.price) || 0,
+        quantity: quantity
+      };
+      existingCartItems.push(cartItem);
+    }
+    localStorage.setItem('productCart', JSON.stringify(existingCartItems));
+    this.showSuccessAlert('Product added to cart successfully!');
+  }
 
+  showSuccessAlert(message: string, action: string = 'Close') {
+    this.snackBar.open(message, action, {
+      duration: 3000, // Duration in milliseconds
+      panelClass: [] // Custom CSS class for styling
+    });
   }
 }
