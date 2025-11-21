@@ -22,7 +22,9 @@ import { MatButtonModule } from '@angular/material/button';
 
 export class AddEditProductsComponent implements OnInit {
   title = 'Add Product';
+  action = 'add'; // 'add' or 'edit'
   addForm = new FormGroup({
+    id: new FormControl<number | null>(null),
     title: new FormControl('', [Validators.required, Validators.maxLength(100)]),
     description: new FormControl('', [Validators.required, Validators.maxLength(200)]),
     category: new FormControl<number | null>(null, [Validators.required, Validators.min(1)]),
@@ -62,6 +64,7 @@ export class AddEditProductsComponent implements OnInit {
     if (idParam) {
       const productId = Number(idParam);
       this.title = 'Edit Product';
+      this.action = 'edit';
       this.getProductDetails(productId);
     }
   }
@@ -84,6 +87,7 @@ export class AddEditProductsComponent implements OnInit {
     this.productService.getProduct(productId).subscribe({
       next: (product) => {
         this.addForm.patchValue({
+          id: product.id,
           title: product.title,
           description: product.description,
           category: product.category,
@@ -136,6 +140,17 @@ export class AddEditProductsComponent implements OnInit {
     return !!(control && control.invalid && control.touched);
   }
 
+  clearForm() {
+    this.addForm.reset({
+      title: '',
+      description: '',
+      category: null,
+      price: '',
+      is_featured: false,
+      image_url: ''
+    });
+  }
+
   saveProduct(action: string) {
     if (action === 'add' && this.addForm.valid) {
       const payload: Partial<Product> = {
@@ -147,6 +162,24 @@ export class AddEditProductsComponent implements OnInit {
         image_url: this.addForm.value.image_url!
       }
       this.productService.createProduct(payload).subscribe({
+        next: (response) => {
+          this.goToProductList();
+        },
+        error: (error) => {
+        }
+      });
+    }
+    else if (action === 'edit' && this.addForm.valid) {
+      const productId = this.addForm.value.id!;
+      const payload: Partial<Product> = {
+        title: this.addForm.value.title!,
+        description: this.addForm.value.description!,
+        category: this.addForm.value.category!,
+        price: this.addForm.value.price!,
+        is_featured: this.addForm.value.is_featured!,
+        image_url: this.addForm.value.image_url!
+      }
+      this.productService.updateProduct(productId, payload).subscribe({
         next: (response) => {
           this.goToProductList();
         },
