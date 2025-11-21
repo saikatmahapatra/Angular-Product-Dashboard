@@ -156,18 +156,17 @@ export class ProductListComponent implements OnInit {
     this.router.navigate(['/products']);
   }
 
-  addToCart(productId: number, quantity: number) {
-    const product = this.products.find(p => p.id === productId);
+  addToCart(product: Product, quantity: number) {
     // check if product already in cart
     const existingCartItems = JSON.parse(localStorage.getItem('productCart') || '[]');
-    const existingItemIndex = existingCartItems.findIndex((item: CartItem) => item.id === productId);
+    const existingItemIndex = existingCartItems.findIndex((item: CartItem) => item.id === product.id);
     if (existingItemIndex !== -1) {
       // update quantity
       existingCartItems[existingItemIndex].quantity += quantity;
     } else {
       // add new item
       const cartItem: CartItem = {
-        id: productId,
+        id: product.id,
         title: product?.title || '',
         image_url: product?.image_url || '',
         price: Number(product?.price) || 0,
