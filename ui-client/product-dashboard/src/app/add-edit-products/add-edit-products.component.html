@@ -3,14 +3,14 @@
 <div class="mb-3">
     <mat-form-field>
         <mat-label>Product Name</mat-label>
-        <input matInput name="productName" [(ngModel)]="addForm.title">
+        <input matInput name="productName" [(ngModel)]="addForm.title" maxlength="50">
     </mat-form-field>
 </div>
 
 <div class="mb-3">
     <mat-form-field>
         <mat-label>Product Description</mat-label>
-        <textarea matInput name="descr" [(ngModel)]="addForm.description"></textarea>
+        <textarea matInput name="descr" [(ngModel)]="addForm.description" maxlength="100"></textarea>
     </mat-form-field>
 </div>
 
@@ -33,7 +33,7 @@
 <div class="mb-3">
     <mat-form-field>
         <mat-label>Image URL</mat-label>
-        <input matInput name="imageUrl" [(ngModel)]="addForm.image_url">
+        <input matInput name="imageUrl" [(ngModel)]="addForm.image_url" maxlength="200">
     </mat-form-field>
 </div>
 
