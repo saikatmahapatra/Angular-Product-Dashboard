@@ -1,6 +1,6 @@
 <h2>Cart</h2>
 <div *ngIf="isLoading" style="position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);">
-  <mat-spinner></mat-spinner>
+    <mat-spinner></mat-spinner>
 </div>
 
 <div class="row">
@@ -18,16 +18,20 @@
             <tbody>
                 <tr *ngFor="let item of cartItems">
                     <td>
-                        <img [src]="item?.image_url" alt="{{ item.title }}" width="50" height="50" style="margin-right:10px;">
-                        {{ item.title }}
+                        <a class="d-flex align-items-center" style="text-decoration: none;" [routerLink]="['/products/details/', item.id]">
+                            <img [src]="item?.image_url" alt="{{ item.title }}" width="50" height="50"
+                                style="margin-right:10px;">
+                            {{ item.title }}
+                        </a>
                     </td>
                     <td>
-                        <input type="number" [(ngModel)]="item.quantity" min="1" style="width:60px;" (keyup)="updateQty(item.id, item.quantity)" />
+                        <input type="number" [(ngModel)]="item.quantity" min="1" style="width:60px;"
+                            (keyup)="updateQty(item.id, item.quantity)" />
                     </td>
                     <td>{{ item.price | currency }}</td>
                     <td>{{ (item.quantity * item.price) | currency }}</td>
                     <td>
-                        <button class="btn btn-danger btn-sm" (click)="removeFromCart(item.id)">Remove</button>
+                        <button mat-button color="warn" (click)="removeFromCart(item.id)">Remove</button>
                     </td>
                 </tr>
                 <tr *ngIf="cartItems.length === 0">

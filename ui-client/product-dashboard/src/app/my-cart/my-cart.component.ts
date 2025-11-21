@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -13,7 +13,7 @@ import { CartItem, Product } from '../datasources/product.service';
 @Component({
   selector: 'app-my-cart',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatCardModule, MatButtonModule, MatIconModule, MatToolbarModule, MatPaginatorModule, MatProgressSpinnerModule, MatSnackBarModule],
+  imports: [CommonModule, RouterModule, FormsModule, MatCardModule, MatButtonModule, MatIconModule, MatToolbarModule, MatPaginatorModule, MatProgressSpinnerModule, MatSnackBarModule],
   templateUrl: './my-cart.component.html',
   styleUrl: './my-cart.component.scss'
 })
