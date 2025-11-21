@@ -93,12 +93,12 @@ export class AddEditProductsComponent implements OnInit {
       next: (product) => {
         this.addForm.patchValue({
           id: product.id,
-          title: product.title,
-          description: product.description,
-          category: product.category,
-          price: product.price,
-          is_featured: product.is_featured,
-          image_url: product.image_url
+          title: product.title ? product.title : '',
+          description: product.description ? product.description : '',
+          category: product.category ? product.category : null,
+          price: product.price ? product.price : '',
+          is_featured: product.is_featured ? product.is_featured : false,
+          image_url: product.image_url ? product.image_url : ''
         });
       },
       error: (error) => {
