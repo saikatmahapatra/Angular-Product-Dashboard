@@ -22,12 +22,12 @@ import { MatButtonModule } from '@angular/material/button';
 
 export class AddEditProductsComponent implements OnInit {
   addForm = new FormGroup({
-    title: new FormControl('', [Validators.required]),
-    description: new FormControl('', [Validators.required]),
+    title: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+    description: new FormControl('', [Validators.required, Validators.maxLength(200)]),
     category: new FormControl<number | null>(null, [Validators.required, Validators.min(1)]),
     price: new FormControl('', [Validators.required]),
     is_featured: new FormControl(false),
-    image_url: new FormControl('', [Validators.required])
+    image_url: new FormControl('', [Validators.required, Validators.maxLength(200)]),
   });
 
   categories: Category[] = [];
