@@ -35,6 +35,12 @@
                       <mat-card-subtitle>{{item?.category_name}}</mat-card-subtitle>
                     </mat-card-header>
                     <img mat-card-image [attr.src]="item?.image_url" alt="{{item?.title}}" class="list-img">
+                    <mat-card-content>
+                      <p>
+                        {{item?.description | slice:0:30}}...
+                      </p>
+                      <p>Price: {{item?.price | currency}}</p>
+                    </mat-card-content>
                     <mat-card-actions>
                       <button mat-raised-button class="me-2" color="secondary"
                         (click)="viewProductDetails(item.id)">Details</button>
@@ -72,8 +78,9 @@
         <img mat-card-image [attr.src]="product?.image_url" alt="{{product?.title}}" class="list-img">
         <mat-card-content>
           <p>
-            {{product?.description | slice:0:50}}...
+            {{product?.description | slice:0:30}}...
           </p>
+          <p>Price: {{product?.price | currency}}</p>
         </mat-card-content>
         <mat-card-actions>
           <button mat-raised-button class="me-2" color="secondary"
