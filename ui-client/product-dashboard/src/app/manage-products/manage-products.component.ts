@@ -7,6 +7,7 @@ import { MatSort, MatSortModule, SortDirection } from '@angular/material/sort';
 import { Product, ProductFilters, ProductService } from '../datasources/product.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-manage-products',
   standalone: true,
@@ -30,7 +31,8 @@ export class ManageProductsComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -73,11 +75,19 @@ export class ManageProductsComponent implements OnInit {
       this.productService.deleteProduct(productId).subscribe({
         next: () => {
           this.loadProducts();
+          this.showSuccessAlert('Product deleted successfully');
         },
         error: () => {
           this.isLoading = false;
         }
       });
     }
+  }
+
+  showSuccessAlert(message: string, action: string = 'Close') {
+    this.snackBar.open(message, action, {
+      duration: 3000, // Duration in milliseconds
+      panelClass: [] // Custom CSS class for styling
+    });
   }
 }

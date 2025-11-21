@@ -203,7 +203,7 @@ export class AddEditProductsComponent implements OnInit {
   showSuccessAlert(message: string, action: string = 'Close') {
     this.snackBar.open(message, action, {
       duration: 3000, // Duration in milliseconds
-      panelClass: ['success-snackbar'] // Custom CSS class for styling
+      panelClass: [] // Custom CSS class for styling
     });
   }
 }
