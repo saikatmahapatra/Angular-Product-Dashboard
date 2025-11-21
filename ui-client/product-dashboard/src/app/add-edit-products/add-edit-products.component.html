@@ -44,8 +44,8 @@
 
     <div class="mb-3">
         <mat-radio-group formControlName="is_featured">
-            <mat-radio-button value="true">Featured Product</mat-radio-button>
-            <mat-radio-button value="false">General Product</mat-radio-button>
+            <mat-radio-button [value]="true">Featured Product</mat-radio-button>
+            <mat-radio-button [value]="false">General Product</mat-radio-button>
         </mat-radio-group>
         <mat-error>{{getFieldError('is_featured')}}</mat-error>
     </div>
