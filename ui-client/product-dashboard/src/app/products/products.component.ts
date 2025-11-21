@@ -10,6 +10,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-product-list',
   standalone: true,
@@ -23,6 +24,9 @@ export class ProductListComponent implements OnInit {
   categories: Category[] = [];
   filters: ProductFilters = {};
   isLoading = false;
+  isDetailView = false;
+  title = 'Product List';
+  productDetails: Product[] = [];
 
   totalRecords = 0;
   itemPerPage = 10; // not working, BE is having 10 by default
@@ -30,10 +34,24 @@ export class ProductListComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private categoryService: CategoryService
-  ) { 
+    private categoryService: CategoryService,
+    private router: Router,
+    private route: ActivatedRoute
+
+  ) {
     this.filters.page = this.pageIndex + 1;
     this.filters.page_size = this.itemPerPage;
+
+    const idParam = this.route.snapshot.paramMap.get('id');
+    if (idParam) {
+      const productId = Number(idParam);
+      this.title = 'Product Details';
+      this.getProductDetails(productId);
+      this.isDetailView = true;
+    } else {
+      this.title = 'Products';
+      this.isDetailView = false;
+    }
   }
 
   ngOnInit(): void {
@@ -77,6 +95,19 @@ export class ProductListComponent implements OnInit {
     });
   }
 
+  getProductDetails(productId: number): void {
+    this.isLoading = true;
+    this.productService.getProduct(productId).subscribe({
+      next: (product) => {
+        this.isLoading = false;
+        this.productDetails.push(product)
+      },
+      error: (error) => {
+        this.isLoading = false;
+      }
+    });
+  }
+
   loadCategories(): void {
     this.categoryService.getCategories().subscribe({
       next: (categories) => {
@@ -112,5 +143,17 @@ export class ProductListComponent implements OnInit {
         console.error('Error toggling featured:', error);
       }
     });
+  }
+
+  viewProductDetails(id: number) {
+    this.router.navigate(['/products/details', id]);
+  }
+
+  backToList() {
+    this.router.navigate(['/products']);
+  }
+
+  addToCart(productId: number, quantity: number) {
+
   }
 }
