@@ -9,17 +9,16 @@
 
 <div class="mb-3">
     <mat-form-field>
-        <mat-label>Textarea</mat-label>
-        <textarea matInput></textarea>
+        <mat-label>Product Description</mat-label>
+        <textarea matInput name="descr" [(ngModel)]="addForm.description"></textarea>
     </mat-form-field>
 </div>
 
 <div class="mb-3">
     <mat-form-field>
-        <mat-label>Select</mat-label>
-        <mat-select>
-            <mat-option value="one">First option</mat-option>
-            <mat-option value="two">Second option</mat-option>
+        <mat-label>Product Category</mat-label>
+        <mat-select name="cat" [(ngModel)]="addForm.category">
+            <mat-option *ngFor="let cat of categories" [value]="cat.id">{{cat.name}}</mat-option>
         </mat-select>
     </mat-form-field>
 </div>
