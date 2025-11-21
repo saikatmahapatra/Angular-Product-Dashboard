@@ -9,11 +9,12 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
   selector: 'app-product-list',
   standalone: true,
   templateUrl: './products.component.html',
-  imports: [CommonModule, FormsModule, MatCardModule, MatButtonModule, MatIconModule, MatToolbarModule, MatPaginatorModule],
+  imports: [CommonModule, FormsModule, MatCardModule, MatButtonModule, MatIconModule, MatToolbarModule, MatPaginatorModule, MatProgressSpinnerModule],
   styleUrls: ['./products.component.scss']
 })
 export class ProductListComponent implements OnInit {

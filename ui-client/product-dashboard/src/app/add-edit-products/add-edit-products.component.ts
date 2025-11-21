@@ -10,12 +10,12 @@ import { Product, ProductService } from '../datasources/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-add-edit-products',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatSelectModule, MatInputModule, MatRadioModule, MatButtonModule, MatSnackBarModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatSelectModule, MatInputModule, MatRadioModule, MatButtonModule, MatSnackBarModule, MatProgressSpinnerModule],
   templateUrl: './add-edit-products.component.html',
   styleUrl: './add-edit-products.component.scss'
 })
@@ -24,6 +24,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 export class AddEditProductsComponent implements OnInit {
   title = '';
   action = ''; // 'add' or 'edit'
+  isLoading = false;
   addForm = new FormGroup({
     id: new FormControl<number | null>(null),
     title: new FormControl('', [Validators.required, Validators.maxLength(100)]),
@@ -79,18 +80,23 @@ export class AddEditProductsComponent implements OnInit {
   }
 
   loadCategories(): void {
+    this.isLoading = true;
     this.categoryService.getCategories().subscribe({
       next: (categories) => {
         this.categories = categories.results;
+        this.isLoading = false;
       },
       error: (error) => {
+        this.isLoading = false;
       }
     });
   }
 
   getProductDetails(productId: number): void {
+    this.isLoading = true;
     this.productService.getProduct(productId).subscribe({
       next: (product) => {
+        this.isLoading = false;
         this.addForm.patchValue({
           id: product.id,
           title: product.title ? product.title : '',
@@ -102,6 +108,7 @@ export class AddEditProductsComponent implements OnInit {
         });
       },
       error: (error) => {
+        this.isLoading = false;
       }
     });
   }
@@ -158,6 +165,7 @@ export class AddEditProductsComponent implements OnInit {
 
   addProduct() {
     if (this.addForm.valid && this.addForm.value.id == null) {
+      this.isLoading = true;
       const payload: Partial<Product> = {
         title: this.addForm.value.title!,
         description: this.addForm.value.description!,
@@ -168,10 +176,12 @@ export class AddEditProductsComponent implements OnInit {
       }
       this.productService.createProduct(payload).subscribe({
         next: (response) => {
+          this.isLoading = false;
           this.goToProductList();
           this.showSuccessAlert('Product added successfully!');
         },
         error: (error) => {
+          this.isLoading = false;
         }
       });
     }
@@ -179,6 +189,7 @@ export class AddEditProductsComponent implements OnInit {
 
   updateProduct() {
     if (this.addForm.valid && this.addForm.value.id != null) {
+      this.isLoading = true;
       const productId = this.addForm.value.id!;
       const payload: Partial<Product> = {
         title: this.addForm.value.title!,
@@ -190,11 +201,13 @@ export class AddEditProductsComponent implements OnInit {
       }
       this.productService.updateProduct(productId, payload).subscribe({
         next: (response) => {
+          this.isLoading = false;
           this.goToProductList();
           //this.getProductDetails(productId);
           this.showSuccessAlert('Product updated successfully!');
         },
         error: (error) => {
+          this.isLoading = false;
         }
       });
     }
