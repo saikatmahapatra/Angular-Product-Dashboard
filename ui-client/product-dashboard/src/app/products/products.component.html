@@ -3,7 +3,49 @@
   <mat-spinner></mat-spinner>
 </div>
 
+<!--List View-->
 <ng-container *ngIf="!isDetailView">
+  <!-- Featured -->
+  <div class="row mb-5" *ngIf="!isLoading && featuredProducts && featuredProducts.length > 0">
+    <div class="col-md-12">
+      <div id="carouselExampleIndicators" class="carousel slide">
+        <div class="carousel-inner">
+          <div *ngFor="let _ of featuredProducts; let idx = index">
+            <div class="carousel-item" [class.active]="idx === 0" *ngIf="idx % 4 === 0">
+              <div class="row">
+                <div class="col-md-3" *ngFor="let item of featuredProducts | slice:idx:idx+4">
+                  <mat-card class="product-card">
+                    <mat-card-header>
+                      <mat-card-title>{{item?.title | slice:0:25}}...</mat-card-title>
+                      <mat-card-subtitle>{{item?.category_name}}</mat-card-subtitle>
+                    </mat-card-header>
+                    <img mat-card-image [attr.src]="item?.image_url" alt="{{item?.title}}" class="list-img">
+                    <mat-card-actions>
+                      <button mat-raised-button class="me-2" color="secondary"
+                        (click)="viewProductDetails(item.id)">Details</button>
+                      <button mat-raised-button color="primary" (click)="addToCart(item.id, 1)">Add to cart</button>
+                    </mat-card-actions>
+                  </mat-card>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+          data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+          data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters -->
   <div class="row">
     <div class="col-md-12 mb-3">
       <div class="filters">
@@ -13,77 +55,12 @@
             {{cat.name}}
           </option>
         </select>
-
       </div>
     </div>
   </div>
+
+  <!--Other Productcs-->
   <div class="row" *ngIf="!isLoading">
-
-    <div id="carouselExampleIndicators" class="carousel slide mb-4 carousel-bg">
-      <div class="carousel-indicators">
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
-          aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-          aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-          aria-label="Slide 3"></button>
-      </div>
-      <div class="carousel-inner" *ngIf="featuredProducts.length > 0">
-        <div *ngFor="let _ of featuredProducts; let idx = index">
-          <div class="carousel-item" [class.active]="idx === 0" *ngIf="idx % 4 === 0">
-            <div class="row">
-              <div class="col-md-3" *ngFor="let item of featuredProducts | slice:idx:idx+4">
-                <mat-card class="product-card" appearance="outlined">
-                  <mat-card-header>
-                    <mat-card-title>{{item?.title | slice:0:25}}...</mat-card-title>
-                    <mat-card-subtitle>{{item?.category_name}}</mat-card-subtitle>
-                  </mat-card-header>
-                  <img mat-card-image [attr.src]="item?.image_url" alt="{{item?.title}}" class="list-img">
-                  <mat-card-actions>
-                    <button mat-raised-button class="me-2" color="secondary" (click)="viewProductDetails(item.id)">Details</button>
-                    <button mat-raised-button color="primary" (click)="addToCart(item.id, 1)">Add to cart</button>
-                  </mat-card-actions>
-                </mat-card>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-        data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-        data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
-    </div>
-
-
-    <!-- featured -->
-    <!-- <div class="col-md-4 mb-3" *ngFor="let product of featuredProducts">
-      <mat-card class="product-card" appearance="outlined">
-        <mat-card-header>
-          <mat-card-title>{{product?.title | slice:0:25}}...</mat-card-title>
-          <mat-card-subtitle>{{product?.category_name}}</mat-card-subtitle>
-        </mat-card-header>
-        <img mat-card-image [attr.src]="product?.image_url" alt="{{product?.title}}" class="list-img">
-        <mat-card-content>
-          <p>
-            {{product?.description | slice:0:50}}...
-          </p>
-        </mat-card-content>
-        <mat-card-actions>
-          <button mat-raised-button class="me-2" color="secondary"
-            (click)="viewProductDetails(product.id)">Details</button>
-          <button mat-raised-button color="primary" (click)="addToCart(product.id, 1)">Add to cart</button>
-        </mat-card-actions>
-      </mat-card>
-    </div> -->
-    <!-- featured -->
-
     <div class="col-md-3 mb-3" *ngFor="let product of products">
       <mat-card class="product-card" appearance="outlined">
         <mat-card-header>
@@ -109,6 +86,7 @@
   </mat-paginator>
 </ng-container>
 
+<!--Detail View-->
 <ng-container *ngIf="isDetailView">
   <div class="col-md-6 mb-3">
     <mat-card class="product-card" appearance="outlined">
