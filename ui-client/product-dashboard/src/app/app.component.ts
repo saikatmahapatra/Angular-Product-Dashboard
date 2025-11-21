@@ -12,12 +12,14 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 export class AppComponent implements OnInit {
   title = 'product-dashboard';
   loading = false;
+  cartItemsCount = 0;
 
   constructor(
   ) {
 
   }
   ngOnInit(): void {
+    this.cartItemsCount = JSON.parse(localStorage.getItem('productCart') || '[]').length;
   }
 
 }
