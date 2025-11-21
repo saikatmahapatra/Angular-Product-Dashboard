@@ -21,14 +21,32 @@ import { MatButtonModule } from '@angular/material/button';
 
 
 export class AddEditProductsComponent implements OnInit {
+
+
   addForm = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.maxLength(100)]),
     description: new FormControl('', [Validators.required, Validators.maxLength(200)]),
     category: new FormControl<number | null>(null, [Validators.required, Validators.min(1)]),
-    price: new FormControl('', [Validators.required]),
+    price: new FormControl('', [Validators.required, this.priceValidator.bind(this)]),
     is_featured: new FormControl(false),
-    image_url: new FormControl('', [Validators.required, Validators.maxLength(200)]),
+    image_url: new FormControl('', [Validators.required, Validators.maxLength(200), this.urlValidator.bind(this)]),
   });
+
+  private urlValidator(control: FormControl): { [key: string]: boolean } | null {
+    if (!control.value) {
+      return null;
+    }
+    const urlRegex = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/i;
+    return urlRegex.test(control.value) ? null : { invalidUrl: true };
+  }
+
+  private priceValidator(control: FormControl): { [key: string]: boolean } | null {
+    if (!control.value) {
+      return null;
+    }
+    const priceRegex = /^\d+(\.\d{1,2})?$/;
+    return priceRegex.test(control.value) ? null : { invalidPrice: true };
+  }
 
   categories: Category[] = [];
 
