@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
   styleUrl: './manage-products.component.scss'
 })
 export class ManageProductsComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'title', 'image_url', 'category_name', 'priority', 'price', 'is_featured'];
+  displayedColumns: string[] = ['id', 'title', 'image_url', 'category_name', 'priority', 'price', 'is_featured', 'actions'];
   products: Product[] = [];
   isLoading = false;
 
@@ -37,7 +37,7 @@ export class ManageProductsComponent implements OnInit {
     this.loadProducts();
   }
 
-  goToAddNew () {
+  goToAddNew() {
     this.router.navigate(['/add-edit-product']);
   }
 
@@ -61,5 +61,23 @@ export class ManageProductsComponent implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+
+  goToEdit(productId: number): void {
+    this.router.navigate(['/add-edit-product', productId]);
+  }
+
+  deleteProduct(productId: number): void {
+    if (confirm('Are you sure you want to delete this product?')) {
+      this.isLoading = true;
+      this.productService.deleteProduct(productId).subscribe({
+        next: () => {
+          this.loadProducts();
+        },
+        error: () => {
+          this.isLoading = false;
+        }
+      });
+    }
   }
 }
