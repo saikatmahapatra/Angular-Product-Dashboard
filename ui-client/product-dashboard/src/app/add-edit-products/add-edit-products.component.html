@@ -1,1 +1,48 @@
 <h2>Add Product</h2>
+{{addForm | json}}
+<div class="mb-3">
+    <mat-form-field>
+        <mat-label>Product Name</mat-label>
+        <input matInput name="productName" [(ngModel)]="addForm.title">
+    </mat-form-field>
+</div>
+
+<div class="mb-3">
+    <mat-form-field>
+        <mat-label>Textarea</mat-label>
+        <textarea matInput></textarea>
+    </mat-form-field>
+</div>
+
+<div class="mb-3">
+    <mat-form-field>
+        <mat-label>Select</mat-label>
+        <mat-select>
+            <mat-option value="one">First option</mat-option>
+            <mat-option value="two">Second option</mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+
+<div class="mb-3">
+    <mat-form-field>
+        <mat-label>Unit Net Price</mat-label>
+        <input matInput name="unitPrice" [(ngModel)]="addForm.price">
+    </mat-form-field>
+</div>
+
+<div class="mb-3">
+    <mat-form-field>
+        <mat-label>Image URL</mat-label>
+        <input matInput name="imageUrl" [(ngModel)]="addForm.image_url">
+    </mat-form-field>
+</div>
+
+<div class="mb-3">
+    <mat-radio-group name="isFeatured" [(ngModel)]="addForm.is_featured">
+        <mat-radio-button value="true">Featured Product</mat-radio-button>
+        <mat-radio-button value="false">General Product</mat-radio-button>
+    </mat-radio-group>
+</div>
+<button mat-raised-button color="secondary" class="me-3" (click)="goToProductList()">Cancel</button>
+<button mat-raised-button color="primary" (click)="saveProduct('add')">Save Product</button>

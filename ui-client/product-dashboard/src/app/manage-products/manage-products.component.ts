@@ -6,6 +6,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule, SortDirection } from '@angular/material/sort';
 import { Product, ProductFilters, ProductService } from '../datasources/product.service';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-manage-products',
   standalone: true,
@@ -28,11 +29,16 @@ export class ManageProductsComponent implements OnInit {
   };
 
   constructor(
-    private productService: ProductService
+    private productService: ProductService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     this.loadProducts();
+  }
+
+  goToAddNew () {
+    this.router.navigate(['/add-edit-product']);
   }
 
   pageChangeEvent(event: any): void {
