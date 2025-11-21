@@ -22,7 +22,9 @@ export class MyCartComponent implements OnInit {
   cartItems: CartItem[] = [];
   isLoading = false;
   constructor(
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
 
   }
@@ -41,11 +43,29 @@ export class MyCartComponent implements OnInit {
     this.showSuccessAlert('Item removed from cart successfully!');  
   }
 
+  updateQty(itemId: number, newQty: number) {
+    const item = this.cartItems.find(i => i.id === itemId);
+    if (item) {
+      item.quantity = newQty > 0 ? newQty : 1; // Ensure quantity is at least 1
+      localStorage.setItem('productCart', JSON.stringify(this.cartItems));
+      this.showSuccessAlert('Item quantity updated successfully!');  
+    }
+  }
+
+  getTotalAmount() {
+    return this.cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+  }
+
   showSuccessAlert(message: string, action: string = 'Close') {
     this.snackBar.open(message, action, {
       duration: 3000, // Duration in milliseconds
       panelClass: [] // Custom CSS class for styling
     });
   }
+
+  continueShopping() {
+    this.router.navigate(['/products']);
+  }
+  
 
 }

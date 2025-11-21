@@ -12,6 +12,7 @@
                     <th>Quantity</th>
                     <th>Unit Price</th>
                     <th>Total</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -20,11 +21,25 @@
                         <img [src]="item?.image_url" alt="{{ item.title }}" width="50" height="50" style="margin-right:10px;">
                         {{ item.title }}
                     </td>
-                    <td>{{ item.quantity }}</td>
+                    <td>
+                        <input type="number" [(ngModel)]="item.quantity" min="1" style="width:60px;" (keyup)="updateQty(item.id, item.quantity)" />
+                    </td>
                     <td>{{ item.price | currency }}</td>
                     <td>{{ (item.quantity * item.price) | currency }}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" (click)="removeFromCart(item.id)">Remove</button>
+                    </td>
+                </tr>
+                <tr *ngIf="cartItems.length === 0">
+                    <td colspan="5" class="text-center">Your cart is empty.</td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="text-right"><strong>Total:</strong></td>
+                    <td colspan="2"><strong>{{ getTotalAmount() | currency }}</strong></td>
                 </tr>
             </tbody>
         </table>
+        <button mat-raised-button color="primary" class="me-3" (click)="continueShopping()">Continue Shopping</button>
+        <button mat-raised-button color="accent" [disabled]="cartItems.length === 0">Checkout</button>
     </div>
 </div>

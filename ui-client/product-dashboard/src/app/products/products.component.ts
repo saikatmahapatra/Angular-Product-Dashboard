@@ -177,6 +177,7 @@ export class ProductListComponent implements OnInit {
     }
     localStorage.setItem('productCart', JSON.stringify(existingCartItems));
     this.showSuccessAlert('Product added to cart successfully!');
+    this.router.navigate(['/my-cart']);
   }
 
   showSuccessAlert(message: string, action: string = 'Close') {
