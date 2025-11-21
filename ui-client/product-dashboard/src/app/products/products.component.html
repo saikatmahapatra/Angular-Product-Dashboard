@@ -91,18 +91,18 @@
   <div class="col-md-6 mb-3">
     <mat-card class="product-card" appearance="outlined">
       <mat-card-header>
-        <mat-card-title>{{productDetails[0].title}}</mat-card-title>
-        <mat-card-subtitle>{{productDetails[0].category_name}}</mat-card-subtitle>
+        <mat-card-title>{{productDetails.title}}</mat-card-title>
+        <mat-card-subtitle>{{productDetails.category_name}}</mat-card-subtitle>
       </mat-card-header>
-      <img mat-card-image [attr.src]="productDetails[0].image_url" alt="{{productDetails[0].title}}">
+      <img mat-card-image [attr.src]="productDetails.image_url" alt="{{productDetails.title}}">
       <mat-card-content>
         <p>
-          {{productDetails[0].description}}
+          {{productDetails.description}}
         </p>
       </mat-card-content>
       <mat-card-actions>
         <button mat-raised-button class="me-2" color="secondary" (click)="backToList()">Back</button>
-        <button mat-raised-button color="primary" (click)="addToCart(productDetails[0].id, 1)">Add to cart</button>
+        <button mat-raised-button color="primary" (click)="addToCart(productDetails.id, 1)">Add to cart</button>
       </mat-card-actions>
     </mat-card>
   </div>

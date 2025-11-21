@@ -27,7 +27,7 @@ export class ProductListComponent implements OnInit {
   isLoading = false;
   isDetailView = false;
   title = 'Product List';
-  productDetails: Product[] = [];
+  productDetails: Product = {} as Product;
   productCart: CartItem[] = [];
 
   totalRecords = 0;
@@ -103,7 +103,7 @@ export class ProductListComponent implements OnInit {
     this.productService.getProduct(productId).subscribe({
       next: (product) => {
         this.isLoading = false;
-        this.productDetails.push(product)
+        this.productDetails = product;
       },
       error: (error) => {
         this.isLoading = false;
