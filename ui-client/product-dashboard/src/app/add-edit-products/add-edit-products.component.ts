@@ -21,8 +21,7 @@ import { MatButtonModule } from '@angular/material/button';
 
 
 export class AddEditProductsComponent implements OnInit {
-
-
+  title = 'Add Product';
   addForm = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.maxLength(100)]),
     description: new FormControl('', [Validators.required, Validators.maxLength(200)]),
@@ -49,6 +48,7 @@ export class AddEditProductsComponent implements OnInit {
   }
 
   categories: Category[] = [];
+  errorMessages: string[] = [];
 
   constructor(
     private categoryService: CategoryService,
@@ -56,7 +56,15 @@ export class AddEditProductsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder
-  ) { }
+  ) {
+    //check if URL has id param for edit
+    const idParam = this.route.snapshot.paramMap.get('id');
+    if (idParam) {
+      const productId = Number(idParam);
+      this.title = 'Edit Product';
+      this.getProductDetails(productId);
+    }
+  }
 
   ngOnInit(): void {
     this.loadCategories();
@@ -72,12 +80,64 @@ export class AddEditProductsComponent implements OnInit {
     });
   }
 
+  getProductDetails(productId: number): void {
+    this.productService.getProduct(productId).subscribe({
+      next: (product) => {
+        this.addForm.patchValue({
+          title: product.title,
+          description: product.description,
+          category: product.category,
+          price: product.price,
+          is_featured: product.is_featured,
+          image_url: product.image_url
+        });
+      },
+      error: (error) => {
+      }
+    });
+  }
+
   goToProductList() {
     this.router.navigate(['/manage-products']);
   }
 
+  getFieldError(fieldName: string): string | null {
+    const control = this.addForm.get(fieldName);
+    if (!control || !control.errors || !control.touched) {
+      return null;
+    }
+
+    const labels: Record<string, string> = {
+      title: 'Title',
+      description: 'Description',
+      category: 'Category',
+      price: 'Price',
+      is_featured: 'Featured',
+      image_url: 'Image URL'
+    };
+
+    const label = labels[fieldName] || fieldName;
+    const errs = control.errors;
+
+    if (errs['required']) return `${label} is required.`;
+    if (errs['maxlength']) return `${label} must be at most ${errs['maxlength'].requiredLength} characters.`;
+    if (errs['minlength']) return `${label} must be at least ${errs['minlength'].requiredLength} characters.`;
+    if (errs['min']) return `${label} must be at least ${errs['min'].min}.`;
+    if (errs['max']) return `${label} must be at most ${errs['max'].max}.`;
+    if (errs['pattern']) return `${label} is invalid.`;
+    if (errs['invalidPrice']) return `${label} must be a valid price (up to 2 decimal places).`;
+    if (errs['invalidUrl']) return `${label} must be a valid URL.`;
+
+    return null;
+  }
+
+  hasFieldError(fieldName: string): boolean {
+    const control = this.addForm.get(fieldName);
+    return !!(control && control.invalid && control.touched);
+  }
+
   saveProduct(action: string) {
-    if (action === 'add') {
+    if (action === 'add' && this.addForm.valid) {
       const payload: Partial<Product> = {
         title: this.addForm.value.title!,
         description: this.addForm.value.description!,
