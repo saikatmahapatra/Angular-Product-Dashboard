@@ -1,47 +1,57 @@
 <h2>Add Product</h2>
-{{addForm | json}}
-<div class="mb-3">
-    <mat-form-field>
-        <mat-label>Product Name</mat-label>
-        <input matInput name="productName" [(ngModel)]="addForm.title" maxlength="50">
-    </mat-form-field>
-</div>
+{{addForm.value| json}}
 
-<div class="mb-3">
-    <mat-form-field>
-        <mat-label>Product Description</mat-label>
-        <textarea matInput name="descr" [(ngModel)]="addForm.description" maxlength="200"></textarea>
-    </mat-form-field>
-</div>
 
-<div class="mb-3">
-    <mat-form-field>
-        <mat-label>Product Category</mat-label>
-        <mat-select name="cat" [(ngModel)]="addForm.category">
-            <mat-option *ngFor="let cat of categories" [value]="cat.id">{{cat.name}}</mat-option>
-        </mat-select>
-    </mat-form-field>
-</div>
+<form [formGroup]="addForm" (ngSubmit)="saveProduct('add')">
+    <div class="mb-3">
+        <mat-form-field>
+            <mat-label>Product Name</mat-label>
+            <input matInput formControlName="title" maxlength="50">
+            
+        </mat-form-field>
+    </div>
 
-<div class="mb-3">
-    <mat-form-field>
-        <mat-label>Unit Net Price</mat-label>
-        <input matInput name="unitPrice" [(ngModel)]="addForm.price">
-    </mat-form-field>
-</div>
+    <div class="mb-3">
+        <mat-form-field>
+            <mat-label>Product Description</mat-label>
+            <textarea matInput formControlName="description" maxlength="200"></textarea>
+            
+        </mat-form-field>
+    </div>
 
-<div class="mb-3">
-    <mat-form-field>
-        <mat-label>Image URL</mat-label>
-        <input matInput name="imageUrl" [(ngModel)]="addForm.image_url" maxlength="200">
-    </mat-form-field>
-</div>
+    <div class="mb-3">
+        <mat-form-field>
+            <mat-label>Product Category</mat-label>
+            <mat-select formControlName="category">
+                <mat-option *ngFor="let cat of categories" [value]="cat.id">{{cat.name}}</mat-option>
+            </mat-select>
+            
+        </mat-form-field>
+    </div>
 
-<div class="mb-3">
-    <mat-radio-group name="isFeatured" [(ngModel)]="addForm.is_featured">
-        <mat-radio-button value="true">Featured Product</mat-radio-button>
-        <mat-radio-button value="false">General Product</mat-radio-button>
-    </mat-radio-group>
-</div>
-<button mat-raised-button color="secondary" class="me-3" (click)="goToProductList()">Cancel</button>
-<button mat-raised-button color="primary" (click)="saveProduct('add')">Save Product</button>
+    <div class="mb-3">
+        <mat-form-field>
+            <mat-label>Unit Net Price</mat-label>
+            <input matInput formControlName="price">
+            
+        </mat-form-field>
+    </div>
+
+    <div class="mb-3">
+        <mat-form-field>
+            <mat-label>Image URL</mat-label>
+            <input matInput formControlName="image_url" maxlength="200">
+            
+        </mat-form-field>
+    </div>
+
+    <div class="mb-3">
+        <mat-radio-group formControlName="is_featured">
+            <mat-radio-button value="true">Featured Product</mat-radio-button>
+            <mat-radio-button value="false">General Product</mat-radio-button>
+        </mat-radio-group>
+        
+    </div>
+    <button mat-raised-button color="secondary" class="me-3" (click)="goToProductList()">Cancel</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="addForm.invalid">Save Product</button>
+</form>
