@@ -1,58 +1,68 @@
 <h2>{{title}}</h2>
 <div *ngIf="isLoading" style="position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);">
-  <mat-spinner></mat-spinner>
+    <mat-spinner></mat-spinner>
 </div>
-<form [formGroup]="addForm">
-    <div class="mb-3">
-        <mat-form-field>
-            <mat-label>Product Name</mat-label>
-            <input matInput formControlName="title" maxlength="50">
-            <mat-error>{{getFieldError('title')}}</mat-error>
-        </mat-form-field>
-    </div>
 
-    <div class="mb-3">
-        <mat-form-field>
-            <mat-label>Product Description</mat-label>
-            <textarea matInput formControlName="description" maxlength="200"></textarea>
-            <mat-error>{{getFieldError('description')}}</mat-error>
-        </mat-form-field>
-    </div>
+<div class="row">
+    <div class="col-md-6">
 
-    <div class="mb-3">
-        <mat-form-field>
-            <mat-label>Product Category</mat-label>
-            <mat-select formControlName="category">
-                <mat-option *ngFor="let cat of categories" [value]="cat.id">{{cat.name}}</mat-option>
-            </mat-select>
-            <mat-error>{{getFieldError('category')}}</mat-error>
-        </mat-form-field>
-    </div>
+        <form [formGroup]="addForm">
+            <div class="mb-3">
+                <mat-form-field class="product-form-field">
+                    <mat-label>Product Name</mat-label>
+                    <input matInput formControlName="title" maxlength="50">
+                    <mat-error>{{getFieldError('title')}}</mat-error>
+                </mat-form-field>
+            </div>
 
-    <div class="mb-3">
-        <mat-form-field>
-            <mat-label>Unit Net Price</mat-label>
-            <input matInput formControlName="price">
-            <mat-error>{{getFieldError('price')}}</mat-error>
-        </mat-form-field>
-    </div>
+            <div class="mb-3">
+                <mat-form-field class="product-form-field">
+                    <mat-label>Product Description</mat-label>
+                    <textarea matInput formControlName="description" maxlength="200"></textarea>
+                    <mat-error>{{getFieldError('description')}}</mat-error>
+                </mat-form-field>
+            </div>
 
-    <div class="mb-3">
-        <mat-form-field>
-            <mat-label>Image URL</mat-label>
-            <input matInput formControlName="image_url" maxlength="200">
-            <mat-error>{{getFieldError('image_url')}}</mat-error>
-        </mat-form-field>
-    </div>
+            <div class="mb-3">
+                <mat-form-field class="product-form-field">
+                    <mat-label>Product Category</mat-label>
+                    <mat-select formControlName="category">
+                        <mat-option *ngFor="let cat of categories" [value]="cat.id">{{cat.name}}</mat-option>
+                    </mat-select>
+                    <mat-error>{{getFieldError('category')}}</mat-error>
+                </mat-form-field>
+            </div>
 
-    <div class="mb-3">
-        <mat-radio-group formControlName="is_featured">
-            <mat-radio-button [value]="true">Featured Product</mat-radio-button>
-            <mat-radio-button [value]="false">General Product</mat-radio-button>
-        </mat-radio-group>
-        <mat-error>{{getFieldError('is_featured')}}</mat-error>
+            <div class="mb-3">
+                <mat-form-field class="product-form-field">
+                    <mat-label>Unit Net Price</mat-label>
+                    <input matInput formControlName="price">
+                    <mat-error>{{getFieldError('price')}}</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="mb-3">
+                <mat-form-field class="product-form-field">
+                    <mat-label>Image URL</mat-label>
+                    <input matInput formControlName="image_url" maxlength="200">
+                    <mat-hint>You can search images form <a target="_blank"
+                            href="https://unsplash.com/">https://unsplash.com</a></mat-hint>
+                    <mat-error>{{getFieldError('image_url')}}</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="mb-3">
+                <mat-radio-group formControlName="is_featured">
+                    <mat-radio-button [value]="true">Featured Product</mat-radio-button>
+                    <mat-radio-button [value]="false">General Product</mat-radio-button>
+                </mat-radio-group>
+                <mat-error>{{getFieldError('is_featured')}}</mat-error>
+            </div>
+            <button mat-raised-button color="secondary" class="me-3" (click)="goToProductList()">Cancel</button>
+            <button *ngIf="action === 'add' && addForm.value.id == null" mat-raised-button color="primary"
+                [disabled]="addForm.invalid" (click)="addProduct()">Add Product</button>
+            <button *ngIf="action === 'edit' && addForm.value.id !== null" mat-raised-button color="primary"
+                [disabled]="addForm.invalid" (click)="updateProduct()">Update Product</button>
+        </form>
     </div>
-    <button mat-raised-button color="secondary" class="me-3" (click)="goToProductList()">Cancel</button>
-    <button *ngIf="action === 'add' && addForm.value.id == null" mat-raised-button color="primary" [disabled]="addForm.invalid" (click)="addProduct()">Add Product</button>
-    <button *ngIf="action === 'edit' && addForm.value.id !== null" mat-raised-button color="primary" [disabled]="addForm.invalid" (click)="updateProduct()">Update Product</button>
-</form>
+</div>
