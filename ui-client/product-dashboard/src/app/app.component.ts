@@ -3,7 +3,6 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { LoaderService } from './loader.service';
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, RouterLink, RouterLinkActive, MatToolbarModule, MatButtonModule, MatProgressSpinnerModule],
@@ -15,14 +14,10 @@ export class AppComponent implements OnInit {
   loading = false;
 
   constructor(
-    private loaderService: LoaderService
   ) {
 
   }
   ngOnInit(): void {
-    this.loaderService.getLoader().subscribe((res) => {
-      this.loading = res;
-    });
   }
 
 }
