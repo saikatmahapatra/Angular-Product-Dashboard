@@ -9,7 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { CartItem, Product } from '../datasources/product.service';
+import { CartItem, Product, ProductService } from '../datasources/product.service';
 @Component({
   selector: 'app-my-cart',
   standalone: true,
@@ -24,7 +24,8 @@ export class MyCartComponent implements OnInit {
   constructor(
     private snackBar: MatSnackBar,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private productService: ProductService
   ) {
 
   }
@@ -41,6 +42,7 @@ export class MyCartComponent implements OnInit {
     this.cartItems = this.cartItems.filter(item => item.id !== itemId);
     localStorage.setItem('productCart', JSON.stringify(this.cartItems));
     this.showSuccessAlert('Item removed from cart successfully!');  
+    this.productService.cartUpdated.next(true);
   }
 
   updateQty(itemId: number, newQty: number) {
@@ -49,6 +51,7 @@ export class MyCartComponent implements OnInit {
       item.quantity = newQty > 0 ? newQty : 1; // Ensure quantity is at least 1
       localStorage.setItem('productCart', JSON.stringify(this.cartItems));
       this.showSuccessAlert('Item quantity updated successfully!');  
+      this.productService.cartUpdated.next(true);
     }
   }
 

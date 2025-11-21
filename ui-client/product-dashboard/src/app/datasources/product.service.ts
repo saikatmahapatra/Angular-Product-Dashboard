@@ -1,6 +1,6 @@
 // src/app/services/product.service.ts
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ApiService, PaginatedResponse } from './api.service';
 
@@ -38,6 +38,7 @@ export interface ProductFilters {
   providedIn: 'root'
 })
 export class ProductService {
+  public cartUpdated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private endpoint = '/api/products';
 
   constructor(private apiService: ApiService) { }
