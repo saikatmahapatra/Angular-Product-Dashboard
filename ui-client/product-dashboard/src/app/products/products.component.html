@@ -5,10 +5,25 @@
 
 <!--List View-->
 <ng-container *ngIf="!isDetailView">
+  <!-- Filters -->
+  <div class="row">
+    <div class="col-md-12 mb-3">
+      <div class="filters">
+        <select [(ngModel)]="filters.category" (change)="loadProducts()">
+          <option [value]="undefined">All Categories</option>
+          <option *ngFor="let cat of categories" [value]="cat.id">
+            {{cat.name}}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+
   <!-- Featured -->
   <div class="row mb-5" *ngIf="!isLoading && featuredProducts && featuredProducts.length > 0">
     <div class="col-md-12">
-      <div id="carouselExampleIndicators" class="carousel slide">
+      <h4>Featured Products</h4>
+      <div id="carouselExampleIndicators" class="carousel slide bg-light">
         <div class="carousel-inner">
           <div *ngFor="let _ of featuredProducts; let idx = index">
             <div class="carousel-item" [class.active]="idx === 0" *ngIf="idx % 4 === 0">
@@ -45,22 +60,9 @@
     </div>
   </div>
 
-  <!-- Filters -->
-  <div class="row">
-    <div class="col-md-12 mb-3">
-      <div class="filters">
-        <select [(ngModel)]="filters.category" (change)="loadProducts()">
-          <option [value]="undefined">All Categories</option>
-          <option *ngFor="let cat of categories" [value]="cat.id">
-            {{cat.name}}
-          </option>
-        </select>
-      </div>
-    </div>
-  </div>
-
   <!--Other Productcs-->
   <div class="row" *ngIf="!isLoading">
+    <h4>All Products</h4>
     <div class="col-md-3 mb-3" *ngFor="let product of products">
       <mat-card class="product-card" appearance="outlined">
         <mat-card-header>
