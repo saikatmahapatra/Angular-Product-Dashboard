@@ -1,5 +1,5 @@
 <h2>{{title}}</h2>
-<form [formGroup]="addForm" (ngSubmit)="saveProduct('add')">
+<form [formGroup]="addForm">
     <div class="mb-3">
         <mat-form-field>
             <mat-label>Product Name</mat-label>
@@ -50,5 +50,6 @@
         <mat-error>{{getFieldError('is_featured')}}</mat-error>
     </div>
     <button mat-raised-button color="secondary" class="me-3" (click)="goToProductList()">Cancel</button>
-    <button mat-raised-button color="primary" [disabled]="addForm.invalid" (click)="saveProduct(action)">Save Product</button>
+    <button *ngIf="action === 'add' && addForm.value.id == null" mat-raised-button color="primary" [disabled]="addForm.invalid" (click)="addProduct()">Add Product</button>
+    <button *ngIf="action === 'edit' && addForm.value.id !== null" mat-raised-button color="primary" [disabled]="addForm.invalid" (click)="updateProduct()">Update Product</button>
 </form>

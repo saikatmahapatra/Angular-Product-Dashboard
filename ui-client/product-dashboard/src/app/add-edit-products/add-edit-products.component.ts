@@ -22,8 +22,8 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 export class AddEditProductsComponent implements OnInit {
-  title = 'Add Product';
-  action = 'add'; // 'add' or 'edit'
+  title = '';
+  action = ''; // 'add' or 'edit'
   addForm = new FormGroup({
     id: new FormControl<number | null>(null),
     title: new FormControl('', [Validators.required, Validators.maxLength(100)]),
@@ -68,6 +68,9 @@ export class AddEditProductsComponent implements OnInit {
       this.title = 'Edit Product';
       this.action = 'edit';
       this.getProductDetails(productId);
+    } else {
+      this.title = 'Add Product';
+      this.action = 'add';
     }
   }
 
@@ -153,8 +156,8 @@ export class AddEditProductsComponent implements OnInit {
     });
   }
 
-  saveProduct(action: string) {
-    if (action === 'add' && this.addForm.valid) {
+  addProduct() {
+    if (this.addForm.valid && this.addForm.value.id == null) {
       const payload: Partial<Product> = {
         title: this.addForm.value.title!,
         description: this.addForm.value.description!,
@@ -172,7 +175,10 @@ export class AddEditProductsComponent implements OnInit {
         }
       });
     }
-    else if (action === 'edit' && this.addForm.valid && this.addForm.value.id) {
+  }
+
+  updateProduct() {
+    if (this.addForm.valid && this.addForm.value.id != null) {
       const productId = this.addForm.value.id!;
       const payload: Partial<Product> = {
         title: this.addForm.value.title!,
