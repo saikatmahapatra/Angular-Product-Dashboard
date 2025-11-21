@@ -168,7 +168,7 @@ export class AddEditProductsComponent implements OnInit {
       }
       this.productService.createProduct(payload).subscribe({
         next: (response) => {
-          //this.goToProductList();
+          this.goToProductList();
           this.showSuccessAlert('Product added successfully!');
         },
         error: (error) => {
@@ -190,8 +190,8 @@ export class AddEditProductsComponent implements OnInit {
       }
       this.productService.updateProduct(productId, payload).subscribe({
         next: (response) => {
-          //this.goToProductList();
-          this.getProductDetails(productId);
+          this.goToProductList();
+          //this.getProductDetails(productId);
           this.showSuccessAlert('Product updated successfully!');
         },
         error: (error) => {
