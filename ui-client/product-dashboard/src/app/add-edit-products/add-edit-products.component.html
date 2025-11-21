@@ -49,6 +49,8 @@
                             href="https://unsplash.com/">https://unsplash.com</a></mat-hint>
                     <mat-error>{{getFieldError('image_url')}}</mat-error>
                 </mat-form-field>
+                <img [src]="addForm.value.image_url" style="max-width: 100px; max-height: 100px;"
+                    *ngIf="addForm.value.image_url" alt="Preview...">
             </div>
 
             <div class="mb-3">
