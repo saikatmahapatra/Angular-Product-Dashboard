@@ -169,7 +169,7 @@ export class AddEditProductsComponent implements OnInit {
         }
       });
     }
-    else if (action === 'edit' && this.addForm.valid) {
+    else if (action === 'edit' && this.addForm.valid && this.addForm.value.id) {
       const productId = this.addForm.value.id!;
       const payload: Partial<Product> = {
         title: this.addForm.value.title!,
