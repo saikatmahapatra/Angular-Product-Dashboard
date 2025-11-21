@@ -9,12 +9,13 @@ import { Category, CategoryService } from '../datasources/category.service';
 import { Product, ProductService } from '../datasources/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 @Component({
   selector: 'app-add-edit-products',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatSelectModule, MatInputModule, MatRadioModule, MatButtonModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatSelectModule, MatInputModule, MatRadioModule, MatButtonModule, MatSnackBarModule],
   templateUrl: './add-edit-products.component.html',
   styleUrl: './add-edit-products.component.scss'
 })
@@ -57,7 +58,8 @@ export class AddEditProductsComponent implements OnInit {
     private productService: ProductService,
     private route: ActivatedRoute,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private snackBar: MatSnackBar
   ) {
     //check if URL has id param for edit
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -163,7 +165,8 @@ export class AddEditProductsComponent implements OnInit {
       }
       this.productService.createProduct(payload).subscribe({
         next: (response) => {
-          this.goToProductList();
+          //this.goToProductList();
+          this.showSuccessAlert('Product added successfully!');
         },
         error: (error) => {
         }
@@ -181,11 +184,20 @@ export class AddEditProductsComponent implements OnInit {
       }
       this.productService.updateProduct(productId, payload).subscribe({
         next: (response) => {
-          this.goToProductList();
+          //this.goToProductList();
+          this.getProductDetails(productId);
+          this.showSuccessAlert('Product updated successfully!');
         },
         error: (error) => {
         }
       });
     }
+  }
+
+  showSuccessAlert(message: string, action: string = 'Close') {
+    this.snackBar.open(message, action, {
+      duration: 3000, // Duration in milliseconds
+      panelClass: ['success-snackbar'] // Custom CSS class for styling
+    });
   }
 }
